@@ -1,2 +1,9 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+const { ipcRenderer } = require('electron');
+
+window.loadMusicFiles = (path) => {
+    ipcRenderer.invoke("loadMusicFiles", path);
+}
+
+ipcRenderer.on("loadedMusicFiles", (event, files) => {
+    console.log(files);
+});

@@ -1,57 +1,29 @@
-const { app, dialog, Menu, BrowserWindow } = require("electron");
+const Electron = require("electron");
+const { dialog, ipcMain } = Electron;
 const path = require("path");
 
-const window = {};
+const createMainWindow = require("./createMainWindow.js");
 
-app.on("ready", () => {
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        resizable: true,
-        useContentSize: true,
-        webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
-        },
+const Data = {};
+
+createMainWindow(Electron, Data);
+
+function loadMusicFiles(path = ".") {
+    const files = dialog.showOpenDialogSync(Data.mainWindow, {
+        properties: ["openFile"],
+        title: "ファイルを開く",
+        filters: [
+            {
+                name: "音楽ファイル",
+                extensions: ["webp"]
+            }
+        ],
+        defaultPath: path,
+        multiSelections: true
     });
+    Data.mainWindow.webContents.send("loadedMusicFiles", files);
+}
 
-    const menuTemplate = Menu.buildFromTemplate([
-        {
-            label: "ファイル",
-            submenu: [
-                { role: "close", label: "閉じる" }
-            ]
-        },
-        {
-            label: "開発者用",
-            click: () => { mainWindow.webContents.openDevTools(); }
-        }
-    ]);
-
-    Menu.setApplicationMenu(menuTemplate);
-
-
-    mainWindow.on("close", (e) => {
-        const option = {
-            type: "info",
-            title: "アプリはまだ終了していません。",
-            message: "アプリを終了しますか?",
-            buttons: ["キャンセル", "最小化", "終了する"],
-            defaultId: 0
-        }
-        const selected = dialog.showMessageBoxSync(option);
-        if (selected === 1) mainWindow.minimize();
-        else if (selected === 3) e.preventDefault();
-    });
-
-    mainWindow.loadFile(path.join(__dirname, "index.html"));
+ipcMain.handle("loadMusicFiles", (path) => {
+    loadMusicFiles(path);
 });
-
-
-
-
-app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
-    }
-});
-
