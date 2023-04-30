@@ -1,9 +1,10 @@
-const path = require("path");
+const { app, BrowserWindow, dialog, Menu } = require("electron");
+const resolvePath = require("./resolvePath");
 
-function createMainWindow(Electron, Data) {
-    const { app, BrowserWindow, dialog, Menu } = Electron;
-
-    Data.isQuickclose = false;
+function createMainWindow() {
+    const Data = {
+        isQuickclose: false
+    };
 
     app.once("ready", () => {
         Data.mainWindow = new BrowserWindow({
@@ -14,7 +15,7 @@ function createMainWindow(Electron, Data) {
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
-                preload: path.join(__dirname, "preload.js")
+                preload: resolvePath("./src/preload.js")
             }
         });
     
@@ -40,7 +41,7 @@ function createMainWindow(Electron, Data) {
                                 Data.isQuickclose = true;
                                 app.relaunch();
                                 app.quit();
-                            };
+                            }
                         }
                     },
                     {
@@ -72,8 +73,10 @@ function createMainWindow(Electron, Data) {
             //終了処理
         });
 
-        mainWindow.loadFile(path.join(__dirname, "index.html"));
+        Data.mainWindow.loadFile(resolvePath("./assets/index.html"));
     });
+
+    return Data;
 }
 
 module.exports = createMainWindow;

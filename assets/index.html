@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>MusicPlayer v0.0.0 | Created by AnmotiProjects</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="playlist-container">
+        <div id="playlist-background"></div>
+        <table id="playlist">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div id="player-container">
+        <div id="player">
+            <div id="player-info">
+                <span id="playing-title"></span>
+            </div>
+            <div id="controls-container">
+                <div id="control-buttons">
+                    <button id="play-pause-button"></button>
+                    <button id="stop-button"></button>
+                </div>
+                <div id="control-timebar">
+                    <div class="control-time">
+                        <span id="current-time"></span>
+                    </div>
+                    <div id="timebar"></div>
+                    <div class="control-time">
+                        -<span id="remaining-time"></span> ( <span id="duration-time"></span> )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

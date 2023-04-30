@@ -1,12 +1,7 @@
-const Electron = require("electron");
-const { dialog, ipcMain } = Electron;
-const path = require("path");
+const { dialog, ipcMain } = require("electron");
+const createMainWindow = require("../libs/createMainWindow.js");
 
-const createMainWindow = require("./createMainWindow.js");
-
-const Data = {};
-
-createMainWindow(Electron, Data);
+const Data = createMainWindow();
 
 function loadMusicFiles(path = ".") {
     const files = dialog.showOpenDialogSync(Data.mainWindow, {
