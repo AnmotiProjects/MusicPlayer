@@ -1,4 +1,25 @@
-window.onload = () => {
+const { ipcRenderer } = window;
+
+ipcRenderer.on("addPlaylistBtn", (event) => {
+    dialog.showOpenDialogSync({
+        title: "プレイリストに追加",
+        properties: ["openFile", "multiSelections"],
+        message: "プレイリストに追加するファイルを選択してください。",
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+/*window.onload = () => {
     const get = {
         element(query, element = document) {
             return element.querySelector(query);
@@ -87,4 +108,4 @@ window.onload = () => {
 
         playlist.table.appendChild(dataRow);
     });
-}
+}*/
